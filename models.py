@@ -19,26 +19,31 @@ class Client(BaseModel):
     birth_date: datetime
 
 class Disp(BaseModel):
-    disp: int
-    client_id: int
-    account_id: int
+    disp_id: int
     disp_type: str
 
 class Loan(BaseModel):
     loan_id: int
-    account_id: int
     loan_date: datetime
     amount: int
-    duratiion: int
+    duration: int
     payments: Decimal
     loan_status: str
 
 class Order(BaseModel):
     order_id: int
-    account_id: int
     bank_to: str
     account_to: int
     amount: Decimal
     k_symbol: str
 
-
+class Transaction(BaseModel):
+    trans_id: int
+    transaction_date: datetime
+    transaction_type: str
+    operation: str
+    amount: int
+    balance: int
+    k_symbol: str
+    bank: str
+    account: int

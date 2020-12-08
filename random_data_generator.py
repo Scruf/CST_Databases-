@@ -51,6 +51,17 @@ BANKS = (
     (3, 'City')
 )
 
+TRANSACTION_TYPE = (
+    (0, 'PEND'),
+    (1, 'FAILED'),
+    (2, 'SUCCESS')
+)
+
+OPERATION_TYPE = (
+    (0, 'WITHDRAW'),
+    (1, 'DISTRIBUTED')
+)
+
 class AccountFactory(factory.Factory):
     class Meta:
         model = Account
@@ -66,6 +77,7 @@ class CardFactory(factory.Factory):
     card_id = factory.LazyAttribute(lambda x: randrange(444444, 9999999))
     disp_id = factory.LazyAttribute(lambda x: randrange(1, 20))
     card_type = factory.LazyAttribute(lambda x: choice(CARD_TYPES)[1])
+    issued = fuzzy.FuzzyDateTime(datetime(2017, 1, 1, tzinfo=timezone.utc))
 
 class ClientFactory(factory.Factory):
     class Meta:
@@ -78,6 +90,7 @@ class ClientFactory(factory.Factory):
 class DispFactory(factory.Factory):
     class Meta:
         model = Disp
+    disp_id = factory.LazyAttribute(lambda x: randrange(1, 1000))
     disp_type = factory.LazyAttribute(lambda x: choice(DISP_TYPE)[1])
 
 class LoanFactory(factory.Factory):
@@ -96,3 +109,19 @@ class OrderFactory(factory.Factory):
     order_id = factory.LazyAttribute(lambda x: randrange(1, 10000))
     bank_to = factory.LazyAttribute(lambda x: choice(BANKS)[1])
     amount = fuzzy.FuzzyDecimal(100.0, 40000.0, 2)
+    k_symbol = 'S'
+    account_to = 1
+
+class TransactionFactory(factory.Factory):
+    class Meta:
+        model = Transaction
+    trans_id = factory.LazyAttribute(lambda x: randrange(1, 1000))
+    transaction_date = fuzzy.FuzzyDateTime(datetime(2011, 1, 1, tzinfo=timezone.utc))
+    transaction_type = factory.LazyAttribute(lambda x: choice(TRANSACTION_TYPE)[1])
+    operation = factory.LazyAttribute(lambda x: choice(OPERATION_TYPE)[1])
+    amount = factory.LazyAttribute(lambda x: randrange(100, 10000))
+    balance = factory.LazyAttribute(lambda x: randrange(1000, 100000))
+    k_symbol = "S"
+    bank = factory.LazyAttribute(lambda x: choice(BANKS)[1])
+    account = 1
+

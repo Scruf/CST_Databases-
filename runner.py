@@ -55,7 +55,6 @@ for i in range(0, 10):
     accounts.append(account)
 
 exclude_fields = {'loans', 'transactions', 'orders', 'disps'}
-import pdb;pdb.set_trace()
 columns = []
 values = []
 from datetime import datetime
@@ -88,7 +87,8 @@ for child in child_dicts:
                 is_header = True
                 writer.write(",".join(list(data.keys()))+"\n")
             writer.write(",".join(list(map(lambda x: str(x), list(data.values()))))+"\n")
-
+is_card_header = False
+is_disp_header = False
 with open('client.csv', 'w') as writer:
     is_client_header = False
     for client in clients:
@@ -96,6 +96,18 @@ with open('client.csv', 'w') as writer:
         if not is_client_header:
             writer.write(",".join(list(client.keys()))+"\n")
             is_client_header = True
-        
+        writer.write(",".join(list(map(lambda x: str(x), list(client.values()))))+"\n") 
+        with open('disp.csv', 'a') as disp_writer:
+            cards = disps.pop('cards')
+            if not is_disp_header:
+                is_disp_header = True
+                disp_writer.write(",".join(list(disps.keys()))+"\n")
+            disp_writer.write(",".join(list(map(lambda x: str(x), list(disps.values()))))+"\n")
+            with open('cards.csv', 'a') as card_writer:
+                for card in cards:
+                    if not is_card_header:
+                        is_card_header = True
+                        card_writer.write(",".join(list(card.keys()))+"\n")
+                    card_writer.write(",".join(list(map(lambda x: str(x), list(card.values()))))+"\n")
 
         
